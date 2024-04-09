@@ -1,70 +1,267 @@
-import React, { useState } from 'react'; // Importa useState desde React
+import React, { useRef, useState } from 'react'
+import { Link } from 'react-router-dom';
+import Header from '../header/Header';
+import '../registro/registro.css'
+import Footer from '../footer/footer';
 
 
 export default function Registro() {
 
+    const [identificacionError, setIdentificacionError] = useState(false)
+    const [nomError, setNomError] = useState(false)
+    const [apellidoError, setApellidoError] = useState(false)
+    const [emailError, setEmailError] = useState(false)
+    const [emailErrorVacio, setErrorEmailVacio] = useState(false)
+    const [direccionError, setDireccionError] = useState(false)
+    const [telefonoError, setTelefonoError] = useState(false)
+    const [fechaNacimientoError, setFechaNacimientoError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const [passwordErrorRepeat, setPasswordErrorRepeat] = useState(false)
+    const [passComparacion, setPassComparacion] = useState(false)
+
+    const form = useRef()
+
+    function idError() { //Esta función setea a false la variable "identificacionError" para que el mensaje de error desaparezca cuando hacen click en el campo de la identificación.
+        setIdentificacionError(false)
+    }
+    function nombreError() { //Esta función setea a false la variable "nomError" para que el mensaje de error desaparezca cuando hacen click en el campo del nombre.
+        setNomError(false)
+    }
+    function apelliError() {
+        setApellidoError(false)
+    }
+    function errorEmail() {
+        setEmailError(false) //Para cuando no escriban una dirección de correo válida en su estructura.
+        setErrorEmailVacio(false) //Para cuan do dejen vacío el campo email
+    }
+    function dirError() {
+        setDireccionError(false)
+    }
+    function telError() {
+        setTelefonoError(false)
+    }
+    function fechaNacimientoErrorFuncion(){
+        setFechaNacimientoError(false)
+    }
+    function passError() {
+        setPasswordError(false)
+    }
+    function passRepeat() {
+        //setPasswordErrorRepeat(false)
+        setPassComparacion(false)
+        setPasswordErrorRepeat(false)
+    }
+
     const [values, setValues] = useState({
-        documento: "",
-        nombre: "",
-        apellido: "",
+        identificacion: "",
+        nombres: "",
+        apellidos: "",
         email: "",
         direccion: "",
         telefono: "",
-        fecha: "",
-        contra: "",
-        contra2: "",
-    });
+        fechaNacimiento:"",
+        password: "",
+        passRepeat: ""
+    })
+    const handleChange = (e) => { //cuando se cambie de Input entonces se guarda la información en la variables.
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value } = e.target
         const newValues = {
             ...values,
             [name]: value,
-        };
-        setValues(newValues);
+        }
+        setValues(newValues)
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        let validPassword = /^(?=.*[A-Z]).{8,}$/;  //Expersión regular para: Mínimo 8 caracteres de longitud. Almenos una letra mayúscula. Almenos una letra minúscula. Almenos un número. Almenos un caracter especial. https://uibakery.io/regex-library/password
+        let validEmail = /^\w+([.-_+]?\w+)@\w+([.-]?\w+)(\.\w{2,10})+$/; //Expresión regular para validar email, es decir, que el email ingresado tenga el formato correcto de una dirección de correo electrónico
+
+        if (values.identificacion.length < 5 || values.identificacion.length > 10 || values.identificacion.length === 0) {
+            setIdentificacionError(true)
+            
+        }
+        if (values.nombres.length < 3 || values.nombres.length === 0) { //El método trim( ) elimina los espacios en blanco en ambos extremos del string.        
+            setNomError(true)
+            
+        }
+        if (values.apellidos.length < 3 || values.apellidos.length === 0) {
+            setApellidoError(true)
+            
+        }
+        if (values.email.length === 0) {
+            setErrorEmailVacio(true)
+            
+        }
+
+        if (!validEmail.test(values.email)) {
+            setEmailError(true)
+            
+        }
+        if (values.direccion.length < 15) {
+            setDireccionError(true)
+            
+        }
+        if (values.telefono.length < 10 || values.telefono.length > 10) {
+            setTelefonoError(true)
+            
+        }
+        if(values.fechaNacimiento === ""){
+            setFechaNacimientoError(true)
+            
+        }
+        if (!validPassword.test(values.password)) {
+            setPasswordError(true)
+            
+        }
+        if (values.passRepeat.length === 0) {
+            setPasswordErrorRepeat(true)
+            
+        }
+        if (values.password !== values.passRepeat) {
+            setPassComparacion(true)
+            
+        }
+
+
+        fetch('http://localhost:3001/registro-usuario', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
+            body: JSON.stringify(values)
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    // alert("Usuario creado con éxito")
+                    Swal.fire({
+                        title: "Usuario creado con éxito",
+                        icon: "success"
+                    })
+                    form.current.reset()
+                    window.location.hash = '/login'
+
+                }
+                if (response.status === 400) {
+                    //alert(" + response.status)
+                    Swal.fire({
+                        title: "No fue posible crear el usuario porque ya existe el correo ingresado " + values.email,
+                        icon: "warning"
+                    })
+
+                }
+            })
+            .catch((error) => {
+                //alert("No fue posible finalizar el proceso de registro por un error " + error)
+                Swal.fire({
+                    title: "No fue posible finalizar el proceso de registro por un error interno del servidor ",
+                    icon: "error"
+                })
+            })
     }
 
+
     return (
-        <div className="principal1">
-            <form>
-                <div className="form-group">
-                    <label htmlFor="documento">Documento</label>
-                    <input type="number" className="form-control" id="documento" name="documento" value={values.documento} onChange={handleChange} placeholder="Debe de estar entre 5 y 10 digitos" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="nombre">Nombre</label>
-                    <input type="text" className="form-control" id="nombre" name="nombre" value={values.nombre} onChange={handleChange} placeholder="Debe ser de minimo 3 caracteres" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="apellido">Apellido</label>
-                    <input type="text" className="form-control" id="apellido" name="apellido" value={values.apellido} onChange={handleChange} placeholder="Debe ser de minimo 3 caracteres" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" className="form-control" id="email" name="email" value={values.email} onChange={handleChange} placeholder="Debe ser de minimo 3 caracteres" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="direccion">Direccion</label>
-                    <input type="password" className="form-control" id="direccion" name="direccion" value={values.direccion} onChange={handleChange} placeholder="Debe tener un formato valido Ejemplo: user@gmail.com" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="telefono">Telefono</label>
-                    <input type="number" className="form-control" id="telefono" name="telefono" value={values.telefono} onChange={handleChange} placeholder="Debe ser de 10 numeros" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="fecha">Fecha de nacimiento</label>
-                    <input type="date" className="form-control" id="fecha" name="fecha" value={values.fecha} onChange={handleChange} placeholder="Dede ser de minimo 3 caracteres" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="contraseña"> Contraseña </label>
-                    <input type="password" className="form-control" id="contra" name="contra" value={values.contra} onChange={handleChange} placeholder="debe ser de minimo 8 caracteres, una mayuscula, una minuscula, un numero " />
-                </div>
-                <div className="form-group2">
-                    <label htmlFor="contraseña2">Repita su contraseña</label>
-                    <input type="password" className="form-control" id="contra2" name="contra2" value={values.contra2} onChange={handleChange} placeholder="Repita su contraseña" />
-                </div>
-                <button type="submit" >Registrarme</button>
+        <div className='container'>
+            <Header />
+            <form onSubmit={handleSubmit} ref={form}>
+
+                <section className="vh-100 bg-image" >
+
+                    <div className="container h-100">
+                        <div className="row d-flex justify-content-center align-items-center h-100">
+
+                            <div className="card" >
+                                <div className="card-body p-5">
+                                    <h2 className="text-uppercase text-center mb-5">Registro</h2>
+
+
+
+                                    <div className="form-outline mb-4">
+
+                                        <label className="form-label" htmlFor="form3Example1cg" >Identificación</label>
+                                        <input type="number" id="form3Example0cg" className="form-control" name='identificacion' placeholder='Deber estar entre 5 y 10 dígitos' onChange={handleChange} onClick={idError} />
+                                        {identificacionError ? <p>La identificación debe estar entre 5 y diez números</p> : ""}
+
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+
+                                        <label className="form-label" htmlFor="form3Example1cg" >Nombre</label>
+                                        <input type="text" id="form3Example1cg" className="form-control" name='nombres' placeholder='Debe ser de mínimo tres caracteres' onChange={handleChange} onClick={nombreError} />
+                                        {nomError ? <p>El nombre debe contener mínimo 3 caracteres</p> : ""}
+
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example1cg">Apellido</label>
+                                        <input type="text" id="form3Example2cg" className="form-control form-control-lg" name='apellidos' placeholder='Debe ser de mínimo tres caracteres' onChange={handleChange} onClick={apelliError} />
+                                        {apellidoError ? <p>El apellido debe contener mínimo 3 caracteres</p> : " "}
+
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example3cg">Email</label>
+                                        <input type="text" id="form3Example3cg" className="form-control form-control-lg" name='email' placeholder='Debe ser un formato válido. Ejemplo: alguien@gmail.com' onChange={handleChange} onClick={errorEmail} />
+                                        {emailError ? <p>El email debe tener la estructura de una dirección de correo electrónico. Verbigracia: alguien@gmail.com</p> : ""}
+                                        {emailErrorVacio ? <p>Debe introducir una dirección de correo electrónico.</p> : ""}
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example3cg">Dirección</label>
+                                        <input type="text" id="form3Example4cg" className="form-control form-control-lg" name='direccion' placeholder='Debe ser de mínimo quince caracteres' onChange={handleChange} onClick={dirError} />
+                                        {direccionError ? <p>La dirección debe contener mínimo 15 caracteres</p> : ""}
+
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example3cg">Teléfono</label>
+                                        <input type="number" id="form3Example5cg" className="form-control form-control-lg" name='telefono' placeholder='Debe ser de diez números' onChange={handleChange} onClick={telError} />
+                                        {telefonoError ? <p>El teléfono debe ser de 10 números</p> : ""}
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example3cg">Fecha de nacimiento</label>
+                                        <input type="date" id="form3Example6cg" className="form-control form-control-lg" name='fechaNacimiento' placeholder='Debe ser de diez números' onChange={handleChange} onClick={fechaNacimientoErrorFuncion} />
+                                        {fechaNacimientoError ? <p>Debe introducir una fecha de nacimiento</p> : ""}
+                                    </div>
+
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example4cg">Password</label>
+                                        <input type="password" id="form3Example7cg" className="form-control form-control-lg" name='password' onChange={handleChange} onClick={passError} />
+                                        {passwordError ? <p>La contraseña no cumple con los requisitos mínimos solicitados(Mínimo 8 caracteres de longitud y almenos una letra mayúscula. ).</p> : ""}
+                                    </div>
+
+                                    <div className="form-outline mb-4">
+                                        <label className="form-label" htmlFor="form3Example4cdg">Repeat your password</label>
+                                        <input type="password" id="form3Example8cdg" className="form-control form-control-lg" name='passRepeat' onChange={handleChange} onClick={passRepeat} />
+                                        {passComparacion ? <p>Las contraseñas ingresadas no coinciden</p> : ""}
+                                        {passwordErrorRepeat ? <p>Este campo no puede quedar vacío.</p> : ""}
+
+                                    </div>
+
+                                    {/*  <div className="form-check d-flex justify-content-center mb-5">
+                                        <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                                        <label className="form-check-label" htmlFor="form2Example3g">
+                                            I agree all statements in <a href="#!" className="text-body"><u>Terms of service</u></a>
+                                        </label>
+                                    </div> */}
+
+                                    <div className="d-flex justify-content-center">
+                                        <button type='submit' className="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                    </div>
+
+                                    <p className="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!" className="fw-bold text-body"><u><Link to='/login'>Login here </Link></u></a></p>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
             </form>
+            <Footer />
         </div>
     )
 }
