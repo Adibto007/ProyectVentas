@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 
-const userFilepath = path.join(__dirname, "../src/componentes/registro-usuario.json");
+const userFilepath = path.join(__dirname, "../../src/componentes/registro-usuario.json");
 
 const controller = {
     register: async function (req, res) {
@@ -34,7 +34,7 @@ const controller = {
 
             users.push(usuarioNuevo);
 
-            await fs.writeFile(userFilePath, JSON.stringify(users, null, 4));
+            await fs.writeFile(userFilepath, JSON.stringify(users, null, 4));
             res.status(200).send("Usuario Registrado");
         } catch (error) {
             console.error("Error al procesar el registro", error);

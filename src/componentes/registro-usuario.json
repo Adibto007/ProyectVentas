@@ -1,3 +1,16 @@
-{
-    
-}
+[
+    {
+        "id": 1,
+        "identificacion": "123456",
+        "nombre": "pepe",
+        "apellido": "pepe",
+        "email": "pepe@gmail.com",
+        "direccion": "pepepepepepepepepepepepeppe",
+        "telefono": "1234567889",
+        "fechaNacimiento": "2024-05-10",
+        "password": "Pepe1234",
+        "estado": "activo",
+        "rol": "Usuario",
+        "fecha_creacion": "2024-04-15T21:46:18.029Z"
+    }
+]
