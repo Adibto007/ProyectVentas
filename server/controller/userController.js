@@ -26,7 +26,7 @@ const controller = {
             };
 
             for (x of users) {
-                if (X.email === req.body.email || X.identificacion === req.body.identificacion) {
+                if (x.email === req.body.email || x.identificacion === req.body.identificacion) {
                     res.status(400).send("El email ya existe");
                     return;
                 }
@@ -47,7 +47,7 @@ const controller = {
 
         login: async function (req, res) {
             try {
-                const usersData = await fs.readFile(userFilePath, "utf-8");
+                const usersData = await fs.readFile(userFilepath, "utf-8");
                 const users = JSON.parse(usersData);
 
                 for (x of users) {

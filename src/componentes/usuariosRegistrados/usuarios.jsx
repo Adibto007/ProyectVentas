@@ -1,12 +1,30 @@
 import React from 'react'
-import {Link} from 'react-router-dom';
-import './header.css'
+import { useState, useEffect } from 'react';
+import '../header/header.css';
+import user from '../registro-usuario.json'
 
 
-function Header() {
+function UsuarioRegistrado() {
+
+    const [userData, setUserData] = useState(null);
+    useEffect(()=>{
+        setUserData(user[0]);
+    })
+    
+    function cerrarSesion() {
+        window.location.href = '/';
+    }
+
     return (
+        
         <div>
-
+            <div className="userData">
+                {userData && (
+                    <div className="userDetails">
+                        <p><span className="label">Nombre:</span> {userData.nombre} {userData.apellido}</p>
+                    </div>
+                )}
+            </div>
             <div className='contenedor'>
                 <nav className="navbar navbar-expand-lg ">
                     <div className="container-fluid">
@@ -33,21 +51,10 @@ function Header() {
                                 </li>
 
 
-                                <Link to='/registro'>
-                                    <li className="nav-item">
-                                        <a className="nav-link active"  >Registrarse</a>
-                                    </li>
-                                </Link>
-
-                                <Link to='/login'>
-                                <li className="nav-item">
-                                    <a className="nav-link active" href="#" >Iniciasr sesión</a>
-                                </li>
-                                </Link>
+                                
                             </ul>
                             <form className="d-flex" role="search">
-                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                <button className="btn btn-outline-success" type="submit">Search</button>
+                                <button className="btn btn-outline-success" type="button" onClick={cerrarSesion}>Cerrar sesion</button>
                             </form>
                         </div>
                     </div>
@@ -57,4 +64,4 @@ function Header() {
     )
 }
 
-export default Header
+export default UsuarioRegistrado

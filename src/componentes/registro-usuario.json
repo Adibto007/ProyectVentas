@@ -12,5 +12,33 @@
         "estado": "activo",
         "rol": "Usuario",
         "fecha_creacion": "2024-04-15T21:46:18.029Z"
+    },
+    {
+        "id": 2,
+        "identificacion": "1234566",
+        "nombre": "JHOAN",
+        "apellido": "HERNANDEZS",
+        "email": "smoralesg0128@gmail.com",
+        "direccion": "qwqwqwqwqwqwqwqwqwwwwwwww",
+        "telefono": "1234567890",
+        "fechaNacimiento": "2024-04-03",
+        "password": "Pepes1234",
+        "estado": "activo",
+        "rol": "Usuario",
+        "fecha_creacion": "2024-04-23T21:44:07.639Z"
+    },
+    {
+        "id": 3,
+        "identificacion": "",
+        "nombre": "",
+        "apellido": "",
+        "email": "",
+        "direccion": "",
+        "telefono": "",
+        "fechaNacimiento": "",
+        "password": "",
+        "estado": "activo",
+        "rol": "Usuario",
+        "fecha_creacion": "2024-04-29T19:21:54.421Z"
     }
 ]
