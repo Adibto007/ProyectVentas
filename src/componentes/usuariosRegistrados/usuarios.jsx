@@ -2,29 +2,32 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import '../header/header.css';
 import user from '../registro-usuario.json'
+import Cookies from 'universal-cookie';
+import './usuario.css';
+
+
+
 
 
 function UsuarioRegistrado() {
 
-    const [userData, setUserData] = useState(null);
-    useEffect(()=>{
-        setUserData(user[0]);
-    })
+    const cookie = new Cookies();
+    const nombre = cookie.get('nombre');
+    const apellido = cookie.get('apellido');
+    const email = cookie.get('email');
     
     function cerrarSesion() {
         window.location.href = '/';
     }
 
-    return (
+    return (    
         
         <div>
-            <div className="userData">
-                {userData && (
-                    <div className="userDetails">
-                        <p><span className="label">Nombre:</span> {userData.nombre} {userData.apellido}</p>
-                    </div>
-                )}
+            <div className='contentUsuario'>
+                <p className='usuarioRegistrado' >Bienvenido {nombre}   {apellido}</p>
+                <p className='usuarioRegistrado' > {email} </p>
             </div>
+
             <div className='contenedor'>
                 <nav className="navbar navbar-expand-lg ">
                     <div className="container-fluid">

@@ -8,7 +8,7 @@ const LoginUser = () => {
     const [values, setValues] = useState({
         email: "",
         password: "",
-        rol: "" 
+        rol: ""
     });
 
     const handleChange = (e) => {
@@ -45,27 +45,60 @@ const LoginUser = () => {
             headers: { "Content-Type": "application/json", "Accept": "application/json" },
             body: JSON.stringify(values)
         })
-        .then(response => {
-            if (response.status === 200) {
-                cookies.set('email', values.email, {
-                    secure: true,
-                    sameSite: 'None',
-                    path: '/'
-                });
-                window.location.hash = (values.rol === "Usuario") ? '/usuarioRegistrado' : '/usuarios-registrados';
-            } else {
-                Swal.fire({
-                    title: "Las credenciales ingresadas no son correctas",
-                    icon: "error"
-                });
-            }
-        })
+            .then(response => response.json())
+            .then(res => {
+                console.log("res-->>", res)
+
+                if (res.title === "error") {
+                    Swal.fire({
+                        title: "Las credenciales ingresadas no son correctas",
+                        icon: "error"
+                    })
+                    window.location.hash = '/login'
+                    return
+                } else {
+
+                    cookies.set('email', res.email, {
+                        secure: true,
+                        sameSite: 'None',
+                        path: '/'
+                    });
+                    
+                    cookies.set('nombre', res.nombre, {
+                        secure: true,
+                        sameSite: 'None',
+                        path: '/'
+                    });
+
+                    cookies.set('apellido', res.apellido, {
+                        secure: true,
+                        sameSite: 'None',
+                        path: '/'
+                    });
+
+                    if (values.rol === "Usuario") {
+                        window.location.hash = 'usuarioRegistrado'
+                    } else {
+                        window.location.hash = 'usuario'
+                    }
+                }
+            })
+        
+
+
+
+
+
+
+
+                
+        
         .catch(() => {
-            Swal.fire({
-                title: "No se puede iniciar sesión por un problema en el servidor",
-                icon: "error"
-            });
-        });
+                    Swal.fire({
+                        title: "No se puede iniciar sesión por un problema en el servidor",
+                        icon: "error"
+                    });
+                });
     };
 
     useEffect(() => {

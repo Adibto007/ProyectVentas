@@ -55,12 +55,18 @@ const controller = {
                         x.email === req.body.email &&
                         x.password === req.body.password &&
                         x.rol === req.body.rol
+                        
                     ) {
-                        res.status(200).send("0k");
-                        return;
+                        console.log(x.nombre, x.apellido)
+                        return res.json({
+                            nombre: x.nombre,
+                            apellido: x.apellido,
+                            email: x.email
+                        });
+                        
                     }
                 }
-                res.status(400).send("Error");
+                res.json({title:"error"});
             } catch (error) {
                 console.error("Error al procesar el registro:", error);
                 res.status(500).send("Error interno del servidor");

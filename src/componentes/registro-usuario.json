@@ -40,5 +40,19 @@
         "estado": "activo",
         "rol": "Usuario",
         "fecha_creacion": "2024-04-29T19:21:54.421Z"
+    },
+    {
+        "id": 4,
+        "identificacion": "323456",
+        "nombre": "pepito",
+        "apellido": "perez",
+        "email": "pepito@gmail.com",
+        "direccion": "calle busquela carrera encuentrela 24",
+        "telefono": "1234567889",
+        "fechaNacimiento": "2024-04-03",
+        "password": "Pepes1234",
+        "estado": "activo",
+        "rol": "Usuario",
+        "fecha_creacion": "2024-04-30T21:08:32.482Z"
     }
 ]
