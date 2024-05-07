@@ -4,6 +4,7 @@ import '../header/header.css';
 import user from '../registro-usuario.json'
 import Cookies from 'universal-cookie';
 import './usuario.css';
+import SesionExpirada from '../login/sesionExpirada';
 
 
 
@@ -17,7 +18,13 @@ function UsuarioRegistrado() {
     const email = cookie.get('email');
     
     function cerrarSesion() {
+
+
+        cookie.remove('apellido');
+        cookie.remove('nombre');
+        cookie.remove('email');
         window.location.href = '/';
+
     }
 
     return (    
@@ -59,10 +66,12 @@ function UsuarioRegistrado() {
                             <form className="d-flex" role="search">
                                 <button className="btn btn-outline-success" type="button" onClick={cerrarSesion}>Cerrar sesion</button>
                             </form>
+                            
                         </div>
                     </div>
                 </nav>
             </div>
+            <SesionExpirada/>
         </div>
     )
 }
