@@ -1,9 +1,15 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
+import { useContext } from 'react';
+import { dataContext } from '../context/DataContext';
+import { FaShoppingCart } from 'react-icons/fa';
 import './header.css'
 
 
 function Header() {
+
+    const { cantidadElementosUnicos } = useContext(dataContext);
+
     return (
         <div>
 
@@ -45,10 +51,15 @@ function Header() {
                                 </li>
                                 </Link>
                             </ul>
-                            <form className="d-flex" role="search">
-                                <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                                <button className="btn btn-outline-success" type="submit">Search</button>
-                            </form>
+                            
+                        </div>
+                        <div className="cart-container">
+                            <Link to="/Carrito" className="cart-link">
+                                <FaShoppingCart size={34} />
+                                {cantidadElementosUnicos > 0 && (
+                                    <span className="cart-count">{cantidadElementosUnicos}</span>
+                                )}
+                            </Link>
                         </div>
                     </div>
                 </nav>

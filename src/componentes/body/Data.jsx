@@ -16,7 +16,9 @@ export default [
         id:1,
         title: "Camisa Y2K Negra",
         image: logo,
-        precio:"$1000"
+        precio:1000,
+        precioCarrito: 1000,
+        cantidad: 1
     },
 
     {
@@ -25,28 +27,36 @@ export default [
         fechaLanzamiento:"20-12-1980",
         description: "Cosmos trata de la ciencia en un contexto humano más amplio y explica como la ciencia y la ciencia ",
         image: logo2,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:3,
         title: "Tennis Air Force 1",
         image: logo3,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:4,
         title: "Cadena Real Hasta La Muerte",
         image: logo4,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:5,
         title: "Gafas Oakley",
         image: logo5,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
@@ -55,49 +65,63 @@ export default [
         fechaLanzamiento:"20-12-1989",
         description: "Contacto",
         image: logo6,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:7,
         title: "Pañoleta Roja",
         image: logo7,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:8,
         title: "Reloj Rolex",
         image: logo8,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:9,
         title: "Boxer romantico",
         image: logo9,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:10,
         title: "Cinturon Y2K",
         image: logo10,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:11,
         title: "Anillo Infernal",
         image: logo11,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     },
 
     {
         id:12,
         title: "Pulsera de Diamantes",
         image: logo12,
-        precio:"$25000"
+        precio:25000,
+        precioCarrito: 25000,
+        cantidad: 1
     }
 
 ]
