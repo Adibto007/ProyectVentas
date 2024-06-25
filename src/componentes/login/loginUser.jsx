@@ -23,7 +23,7 @@ const LoginUser = () => {
 
     const iniciarSesion = (e) => {
         e.preventDefault();
-
+    
         // Verificar que se haya seleccionado un rol
         if (!values.rol) {
             Swal.fire({
@@ -32,8 +32,7 @@ const LoginUser = () => {
             });
             return;
         }
-
-        // Verificar que se hayan ingresado el email y la contraseña
+    
         if (!values.email || !values.password) {
             Swal.fire({
                 title: "Por favor completa todos los campos",
@@ -41,73 +40,59 @@ const LoginUser = () => {
             });
             return;
         }
-
-        fetch("http://localhost:3001/login", {
-            method: 'POST',
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
-            body: JSON.stringify(values)
+    
+        fetch("https://api.jsonbin.io/v3/b/665625a6e41b4d34e4faef34", {
+            method: 'GET',
+            headers: {
+                "X-Master-Key": "$2a$10$1kZaCJWEs7fLiFTxRCaYlOnKO3EKEh9Nq.k5h7MOgPBS9sJNl0gWe"
+            }
         })
-            .then(response => response.json())
-            .then(res => {
-                console.log("res-->>", res)
-
-                if (res.title === "error") {
-                    Swal.fire({
-                        title: "Las credenciales ingresadas no son correctas",
-                        icon: "error"
-                    })
-                    window.location.hash = '/login'
-                    return
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const usuarioEncontrado = data.record.find(user => user.email === values.email && user.password === values.password);
+    
+                if (!usuarioEncontrado) {
+                    throw new Error('Usuario no encontrado');
+                }
+    
+                cookies.set('email', usuarioEncontrado.email, {
+                    secure: true,
+                    sameSite: 'None',
+                    path: '/'
+                });
+    
+                cookies.set('nombre', usuarioEncontrado.nombre, {
+                    secure: true,
+                    sameSite: 'None',
+                    path: '/'
+                });
+    
+                cookies.set('apellido', usuarioEncontrado.apellido, {
+                    secure: true,
+                    sameSite: 'None',
+                    path: '/'
+                });
+    
+                if (values.rol === "Usuario") {
+                    window.location.hash = 'usuarioRegistrado';
                 } else {
-
-                    cookies.set('email', res.email, {
-                        secure: true,
-                        sameSite: 'None',
-                        path: '/'
-                    });
-
-                    cookies.set('nombre', res.nombre, {
-                        secure: true,
-                        sameSite: 'None',
-                        path: '/'
-                    });
-
-                    cookies.set('apellido', res.apellido, {
-                        secure: true,
-                        sameSite: 'None',
-                        path: '/'
-                    });
-
-                    if (values.rol === "Usuario") {
-                        window.location.hash = 'usuarioRegistrado'
-                    } else {
-                        window.location.hash = 'usuario'
-                    }
+                    window.location.hash = 'usuario';
                 }
             })
-
-
-
-
-
-
-
-
-
-
-            .catch(() => {
+            .catch(error => {
+                console.error('Error fetching data:', error);
                 Swal.fire({
                     title: "No se puede iniciar sesión por un problema en el servidor",
                     icon: "error"
                 });
             });
     };
-
-    useEffect(() => {
-        if (cookies.get('email')) {
-            window.location.hash = '/login';
-        }
-    }, []);
+    
 
     return (
         <div>
