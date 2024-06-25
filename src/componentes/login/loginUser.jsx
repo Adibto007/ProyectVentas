@@ -49,7 +49,7 @@ const LoginUser = () => {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('respuesta erronea');
                 }
                 return response.json();
             })
@@ -85,7 +85,7 @@ const LoginUser = () => {
                 }
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                console.error('Error:', error);
                 Swal.fire({
                     title: "No se puede iniciar sesión por un problema en el servidor",
                     icon: "error"
