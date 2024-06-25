@@ -115,7 +115,7 @@ const controller = {
                 if (result.data.record.some(x => x.email === req.body.email)) {
                     return res.status(400).send("Usuario ya existe en la Base de Datos");
                 }
-
+                
                 // Guardar en JSONBin
                 result.data.record.push(usuarioNuevo);
                 axios.put("https://api.jsonbin.io/v3/b/665625a6e41b4d34e4faef34", result.data.record, {
@@ -123,7 +123,9 @@ const controller = {
                         "Content-Type": "application/json",
                         "X-Master-Key": "$2a$10$1kZaCJWEs7fLiFTxRCaYlOnKO3EKEh9Nq.k5h7MOgPBS9sJNl0gWe"
                     }
+                    
                 })
+                
                 .then(response => {
                     if (response.status === 200) {
                         // Guardar en MySQL
@@ -138,6 +140,7 @@ const controller = {
                             usuarioNuevo.password,
                             usuarioNuevo.identificacion
                         ];
+                        res.send("usuario");
 
                         connection.query(sql, values, (error, results) => {
                             if (error) {
@@ -145,7 +148,8 @@ const controller = {
                                 return res.status(500).send("Error interno al registrar usuario");
                             }
                             console.log("Usuario registrado en MySQL correctamente");
-                            res.status(200).send('Usuario registrado correctamente');
+                            
+                            
                         });
                     } else {
                         res.status(400).send("No se pudo actualizar en JSONBin");
