@@ -3,6 +3,8 @@ import { dataContext } from "../context/DataContext";
 import CarritoVacio from './CarritoVacio';
 import { Link } from 'react-router-dom';
 
+import Swal from "sweetalert2"
+
 function CarritoElements() {
     const { productosCarrito, setProductosCarrito } = useContext(dataContext);
     const [total, setTotal] = useState(0);
@@ -39,7 +41,22 @@ function CarritoElements() {
     };
 
     const limpiarCarrito = () => {
-        setProductosCarrito([]);
+        Swal.fire({
+            title: "¿Esta seguro que desea vaciar el carrito?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "VACIAR",
+            cancelButtonText: "CANCELAR"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setProductosCarrito([]);
+            } else {
+            }
+        });
+        
+        
     };
 
     if (productosCarrito.length === 0) {
