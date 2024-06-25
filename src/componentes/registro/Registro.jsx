@@ -8,7 +8,8 @@ import Footer from '../footer/footer';
 
 export default function Registro() {
 
-    let URL = process.env.REACT_APP_ENVIROMENT
+    let URL = import.meta.env.VITE_APP_ENVIRONMENT;
+
 
     const [identificacionError, setIdentificacionError] = useState(false)
     const [nomError, setNomError] = useState(false)
@@ -133,7 +134,7 @@ export default function Registro() {
         //     headers: { "Content-Type": "application/json", 'Accept': 'application/json' },
         //     body: JSON.stringify(values)
         // })
-
+        console.log(`${URL}/registro-usuario`);
         fetch(`${URL}/registro-usuario`,{
             method: "POST",
             headers: {
